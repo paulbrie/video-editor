@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: cutroom-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cutroom
+      POSTGRES_PASSWORD: cutroom
+      POSTGRES_DB: cutroom
+    ports:
+      - "5442:5432"
+    volumes:
+      - cutroom-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cutroom -d cutroom"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  cutroom-pgdata:
